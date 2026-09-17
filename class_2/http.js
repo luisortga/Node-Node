@@ -1,4 +1,5 @@
 import http from 'node:http'
+import fs from 'node:fs'
 
 const desiredPort = process.env.PORT ?? 3000
 
@@ -11,6 +12,17 @@ const processRequest = (req, res) => {
   } else if (req.url === '/contact') {
     res.statusCode = 200 // Ok
     res.end('<h1>luisOrtga</h1>')
+  } else if (req.url === '/studio.png') {
+    fs.readFile('./logo.png', (err, data) => {
+      // espacio reservado buffer : 010010001
+      if (err) {
+        res.statusCode = 500
+        res.end('<h1>Decode image error</h1>')
+      } else {
+        res.setHeader('Content-Type', 'image/png')
+        res.end(data)
+      }
+    })
   } else {
     res.statusCode = 404 // Not Found
     res.setHeader('Content-Type', 'text/html; charset=utf-8') // Asegura que el navegador renderice HTML

@@ -1,5 +1,5 @@
 import http from 'node:http'
-import marvelJson from './marvel/marvel.json'
+import marvelJson from './marvel/marvel.json' with { type: 'json' }
 
 const processRequest = (req, res) => {
   const { method, url } = req
@@ -11,8 +11,8 @@ const processRequest = (req, res) => {
         case '/':
           res.setHeader('Content-Type', 'text/html; charset=utf-8')
           return res.end('<h1>Welcome to pipecoding</h1>')
-        case '/marvel':
-          res.setHeader('Content-Type', 'application/json; chatset=utf-8')
+        case '/marvel/ditto':
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
           return res.end(JSON.stringify(marvelJson))
         default:
           res.statusCode = 404 // Not Found

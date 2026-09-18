@@ -45,14 +45,14 @@ const processRequest = (req, res) => {
             res.end(JSON.stringify(data))
           })
 
+          return // ✅ Agregado aquí
           break
         //
+        default:
+          res.statusCode = 404
+          res.setHeader('Content-Type', 'text/plain; charset=utf8')
+          return res.end('404 Not Found')
       }
-
-    default:
-      res.statusCode = 404
-      res.setHeader('Content-Type', 'text/plain; charset=utf8')
-      return res.end('404 Not Found')
   }
 }
 

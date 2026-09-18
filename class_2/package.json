@@ -19,5 +19,8 @@
   "type": "module",
   "devDependencies": {
     "standard": "17.1.2"
+  },
+  "dependencies": {
+    "express": "5.2.1"
   }
 }

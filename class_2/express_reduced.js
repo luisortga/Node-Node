@@ -2,8 +2,12 @@ import marvelJson from './marvel/marvel.json' with { type: 'json' }
 import express from 'express'
 const app = express()
 
+const PORT = process.env.PORT ?? 1234
 app.disable('x-powered-by')
 
+app.use(express.json())
+
+/*
 // use === middleware
 app.use((req, res, next) => {
   if (req.method !== 'POST') return next()
@@ -13,21 +17,10 @@ app.use((req, res, next) => {
 
   let body = ''
 
-  req.on('data', (chunk) => {
-    body += chunk.toString()
-  })
-
-  req.on('end', () => {
-    const data = JSON.parse(body)
-    data.timestamp = Date.now()
-    // mutan request and inside of information of the req.body
-
-    req.body = data
-    next()
+  ...
   })
 })
-
-const PORT = process.env.PORT ?? 1234
+*/
 
 app.get('/', (req, res) => {
   res.status(200).send('<h1>web pipecoding</h1>')

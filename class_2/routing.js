@@ -45,8 +45,7 @@ const processRequest = (req, res) => {
             res.end(JSON.stringify(data))
           })
 
-          return // ✅ Agregado aquí
-          break
+          return //
         //
         default:
           res.statusCode = 404

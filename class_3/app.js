@@ -1,10 +1,16 @@
 import express from 'express'
+import movies from './movies/movies.json' with { type: 'json' }
 
 const app = express()
 app.disable('x-powered-by')
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Hello World' })
+  // red query params of format
+  res.end('<h1>Movies Data</>')
+})
+
+app.get('/movies', (req, res) => {
+  res.json(movies)
 })
 
 const PORT = process.env.PORT ?? 1234

@@ -1,6 +1,4 @@
 .prettierrc 
-class_1/node_modules
-class_2/node_modules
-class_3/node_modules
+**/node_modules
 class_1/*.ps1
 .eslintrc.json

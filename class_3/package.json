@@ -18,7 +18,8 @@
   },
   "type": "module",
   "dependencies": {
-    "express": "5.2.1"
+    "express": "5.2.1",
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "standard": "17.1.2"

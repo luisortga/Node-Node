@@ -1,5 +1,4 @@
 import express from 'express'
-import cors from 'cors'
 import movies from './movies/movies.json' with { type: 'json' }
 import crypto from 'node:crypto'
 import { validateMovie, validatePartialMovie } from './schemas/movies.js'
@@ -7,27 +6,6 @@ import { validateMovie, validatePartialMovie } from './schemas/movies.js'
 const app = express()
 
 app.use(express.json())
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      const ACCEPTED_ORIGINS = [
-        'http://localhost:8080',
-        'http://localhost:8081',
-        'http://localhost:3000',
-      ]
-
-      if (ACCEPTED_ORIGINS.includes(origin)) {
-        return callback(null, true)
-      }
-
-      if (!origin) {
-        return callback(null, true)
-      }
-
-      return callback(new Error('Not allowed by CORS'))
-    },
-  }),
-)
 
 app.disable('x-powered-by')
 app.get('/', (req, res) => {
@@ -35,7 +13,17 @@ app.get('/', (req, res) => {
   res.end('<h1>Movies Data</>')
 })
 
+const ACCEPTED_ORIGINS = [
+  'http://localhost:8080',
+  'http://localhost:8081',
+  'http://localhost:3000',
+]
+
 app.get('/movies', (req, res) => {
+  const origin = req.header('origin')
+  if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
+    res.header('Access-Control-Allow-Origin', origin)
+  }
   const { genre, duration } = req.query
 
   if (genre) {
@@ -87,6 +75,11 @@ app.post('/movies', (req, res) => {
 
 // delete
 app.delete('/movies/:id', (req, res) => {
+  const origin = req.header('origin')
+  if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
+    res.header('Access-Control-Allow-Origin', origin)
+  }
+
   const { id } = req.params
   const movieIndex = movies.findIndex((movie) => movie.id === id)
 
@@ -122,6 +115,16 @@ app.patch('/movies/:id', (req, res) => {
   movies[movieIndex] = updateMovie
 
   return res.json(updateMovie)
+})
+
+app.options('/movies/:id', (req, res) => {
+  const origin = req.header('origin')
+  if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
+    res.header('Access-Control-Allow-Origin', origin)
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
+  }
+
+  res.send(202)
 })
 
 const PORT = process.env.PORT ?? 1234

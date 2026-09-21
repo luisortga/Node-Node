@@ -18,7 +18,9 @@
   },
   "type": "module",
   "dependencies": {
+    "cors": "2.8.6",
     "express": "5.2.1",
+    "servor": "^4.0.2",
     "zod": "4.6.5"
   },
   "devDependencies": {

@@ -31,3 +31,7 @@ const movieSchema = z.object({
 export function validateMovie(object) {
   return movieSchema.safeParse(object)
 }
+
+export function validatePartialMovie(shape) {
+  return movieSchema.partial().safeParse(shape)
+}

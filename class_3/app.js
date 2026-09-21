@@ -1,7 +1,7 @@
 import express from 'express'
 import movies from './movies/movies.json' with { type: 'json' }
 import crypto from 'node:crypto'
-import { validateMovie } from './schemas/movies.js'
+import { validateMovie, validatePartialMovie } from './schemas/movies.js'
 
 const app = express()
 
@@ -61,6 +61,31 @@ app.post('/movies', (req, res) => {
   movies.push(newMovie)
 
   res.status(201).json(newMovie)
+})
+
+// path
+app.patch('/movies/:id', (req, res) => {
+  const result = validatePartialMovie(req.body)
+
+  if (!result.success) {
+    return res.status(404).json({ error: JSON.parse(result.error.issues) })
+  }
+
+  const { id } = req.params
+  const movieIndex = movies.findIndex((movie) => movie.id === id)
+
+  if (movieIndex === -1) {
+    return res.status(404).json({ message: 'Not found' })
+  }
+
+  const updateMovie = {
+    ...movies[movieIndex],
+    ...result.data,
+  }
+
+  movies[movieIndex] = updateMovie
+
+  return res.json(updateMovie)
 })
 
 const PORT = process.env.PORT ?? 1234

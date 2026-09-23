@@ -23,6 +23,9 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "globals": "^17.12.0",
     "standard": "^17.1.2"
   }
 }

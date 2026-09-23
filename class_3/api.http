@@ -7,16 +7,16 @@ POST http://localhost:1234/movies
 Content-Type: application/json
 
 {
-  "title": "Oppenheimer",
+  "title": "Barbie",
   "year" : 2023,
-  "director": "Cristopher Nolan",
-  "duration": 189,
-  "poster": "http://img.fruugo.com/oppenheimer.jpg",
+  "director": "Greta Gerwig",
+  "duration": 114,
+  "poster": "https://image.tmdb.org/t/p/original/9m9IkcHs7AmW9zS1Ly9ZOYxuKIE.jpg",
   "genre": [
     "Drama",
-    "Horror"
+    "Comedy"
   ],
-  "rate": 8,
+  "rate": 7.3
 }
 
 ## PATCH
@@ -24,5 +24,5 @@ PATCH http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
 Content-Type: application/json
 
 {
-  "title": "Oppenheimer extends",
+  "title": "Barbie extends",
 }

@@ -20,7 +20,7 @@ export class MovieController {
 
     if (!result.success) {
       return res.status(422).json({
-        error: JSON.parse(result.error.issues),
+        error: result.error.issues,
       })
     }
 
@@ -45,12 +45,14 @@ export class MovieController {
     const result = validatePartialMovie(req.body)
 
     if (!result.success) {
-      return res.status(404).json({ error: JSON.parse(result.error.issues) })
+      return res.status(422).json({
+        error: result.error.issues,
+      })
     }
 
     const { id } = req.params
 
-    const updatedMovie = await MovieModel.update({ id, input: result.date })
+    const updatedMovie = await MovieModel.update({ id, input: result.data })
 
     return res.json(updatedMovie)
   }

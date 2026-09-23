@@ -1,6 +1,9 @@
 ### GET
 GET http://localhost:1234/movies
 
+### GET
+GET http://localhost:1234/movies?genre=Action
+
 
 ### POST
 POST http://localhost:1234/movies
@@ -15,14 +18,13 @@ Content-Type: application/json
   "genre": [
     "Drama",
     "Comedy"
-  ],
-  "rate": 7.3
+  ]
 }
 
-## PATCH
-PATCH http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+### PATCH
+PATCH http://localhost:1234/movies/c5da9813-da73-4f65-b054-e41c3516ad5d
 Content-Type: application/json
 
 {
-  "title": "Barbie extends",
+  "title": "Barbie extends"
 }

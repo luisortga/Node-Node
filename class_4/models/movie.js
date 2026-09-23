@@ -2,15 +2,13 @@ import { randomUUID } from 'node:crypto'
 import movies from '../movies/movies.json' with { type: 'json' }
 
 export class MovieModel {
-  static getAll = async ({ genre, duration }) => {
+  static getAll = async ({ genre }) => {
     if (genre) {
       return movies.filter((movie) =>
         movie.genre.some(
           (g) => g.toLocaleLowerCase() === genre.toLocaleLowerCase(),
         ),
       )
-    } else if (duration) {
-      return movies.filter((movie) => movie.duration === Number(duration))
     }
     return movies
   }

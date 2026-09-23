@@ -2,7 +2,7 @@
 GET http://localhost:1234/movies
 
 ### GET
-GET http://localhost:1234/movies?genre=Action
+GET http://localhost:1234/movies?genre=Crime
 
 ### GET
 GET http://localhost:1234/movies?genre=Biography
@@ -24,10 +24,48 @@ Content-Type: application/json
   ]
 }
 
-### PATCH
-PATCH http://localhost:1234/movies/c5da9813-da73-4f65-b054-e41c3516ad5d
+### POST
+POST http://localhost:1234/movies
 Content-Type: application/json
 
 {
-  "title": "Barbie extends"
+  "title": "Ford vs Ferrari",
+  "year" : 2019,
+  "director": "James Mangold",
+  "duration": 152,
+  "poster": "https://image.tmdb.org/t/p/original/6ApDtO7xaWAfPqfi2IARXIzj8QS.jpg",
+  "rate": 8.1,
+  "genre": [
+    "Action",
+    "Biography"
+  ]
 }
+
+### POST
+POST http://localhost:1234/movies
+Content-Type: application/json
+
+{
+  "title": "Need for speed",
+  "year" : 2014,
+  "director": "Scott Waugh",
+  "duration": 130,
+  "poster": "https://m.media-amazon.com/images/M/MV5BYzQzODY4MWUtNzFmZC00ZjFmLTg1ZWItNzAyYTkzOTUxYjFhXkEyXkFqcGc@._V1_.jpg",
+  "rate": 6.5,
+  "genre": [
+    "Action",
+    "Crime",
+    "Drama"
+  ]
+}
+
+### PATCH
+PATCH http://localhost:1234/movies/256de550-b799-11f1-a4aa-b07b255eb463
+Content-Type: application/json
+
+{
+  "title": "Ford vs Ferrari extends"
+}
+
+### DELETE
+DELETE http://localhost:1234/movies/256de550-b799-11f1-a4aa-b07b255eb463

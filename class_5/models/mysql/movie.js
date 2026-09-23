@@ -80,7 +80,6 @@ export class MovieModel {
 
     // todo: crear la conexión de genre
 
-    // crypto.randomUUID()
     const [uuidResult] = await connection.query('SELECT UUID() uuid;')
     const [{ uuid }] = uuidResult
 
@@ -107,10 +106,80 @@ export class MovieModel {
   }
 
   static async delete({ id }) {
-    // ejercio fácil: crear el delete
+    try {
+      const [result] = await connection.query(
+        'DELETE FROM movie WHERE id = UUID_TO_BIN(?);',
+        [id],
+      )
+
+      // result.affectedRows indica cuántas filas se eliminaron
+      if (result.affectedRows === 0) {
+        return null // No se encontró la película
+      }
+
+      return { message: 'Película eliminada correctamente' }
+    } catch (e) {
+      throw new Error('Error eliminando la película')
+    }
   }
 
   static async update({ id, input }) {
-    // ejercicio fácil: crear el update
+    const { title, year, duration, director, rate, poster } = input
+
+    try {
+      // Construir dinámicamente la consulta UPDATE
+      const fields = []
+      const values = []
+
+      if (title !== undefined) {
+        fields.push('title = ?')
+        values.push(title)
+      }
+      if (year !== undefined) {
+        fields.push('year = ?')
+        values.push(year)
+      }
+      if (duration !== undefined) {
+        fields.push('duration = ?')
+        values.push(duration)
+      }
+      if (director !== undefined) {
+        fields.push('director = ?')
+        values.push(director)
+      }
+      if (rate !== undefined) {
+        fields.push('rate = ?')
+        values.push(rate)
+      }
+      if (poster !== undefined) {
+        fields.push('poster = ?')
+        values.push(poster)
+      }
+
+      // Si no hay campos para actualizar
+      if (fields.length === 0) {
+        return await MovieModel.getById({ id })
+      }
+
+      // Agregar el ID al final
+      values.push(id)
+
+      const query = `UPDATE movie SET ${fields.join(', ')} WHERE id = UUID_TO_BIN(?);`
+
+      await connection.query(query, values)
+
+      // Retornar la película actualizada
+      const [movies] = await connection.query(
+        `SELECT title, year, director, duration, poster, rate, BIN_TO_UUID(id) id
+        FROM movie WHERE id = UUID_TO_BIN(?);`,
+        [id],
+      )
+
+      if (movies.length === 0) return null
+
+      return movies[0]
+    } catch (e) {
+      throw new Error('Error actualizando la película')
+    }
   }
 }

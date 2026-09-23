@@ -28,24 +28,13 @@ export class MovieModel {
       if (genres.length === 0) return []
 
       // get the id from the first genre result
-      const [{ id: genreId }] = genres
+      const [{ id }] = genres
 
-      const [movies] = await connection.query(
-        `SELECT DISTINCT
-          m.title,
-          m.year,
-          m.director,
-          m.duration,
-          m.poster,
-          m.rate,
-          BIN_TO_UUID(m.id) as id
-        FROM movie m
-        INNER JOIN movie_genres mg ON m.id = mg.movie_id
-        WHERE mg.genre_id = ?;`,
-        [genreId],
-      )
-
-      return movies
+      // get all movies ids from database table
+      // la query a movie_genres
+      // join
+      // y devolver resultados..
+      return []
     }
 
     const [movies] = await connection.query(

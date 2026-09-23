@@ -21,6 +21,13 @@ app.use('/movies', moviesRouter)
 
 const PORT = process.env.PORT ?? 1234
 
+app.use((req, res) => {
+  res.status(404).send(`
+    404
+    Not Found try later
+  `)
+})
+
 app.listen(PORT, () => {
   console.log(`Server listening on port http://localhost:${PORT}`)
 })

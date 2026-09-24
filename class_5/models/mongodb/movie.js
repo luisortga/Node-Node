@@ -1,13 +1,12 @@
 import 'dotenv/config'
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb'
+
 const uri = process.env.MONGODB_URI
 
-// Es buena práctica verificar que la variable existe para evitar errores difíciles de rastrear
 if (!uri) {
   throw new Error('Falta la variable de entorno MONGODB_URI en el archivo .env')
 }
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -16,15 +15,30 @@ const client = new MongoClient(uri, {
   },
 })
 
+let connection = null
+
+// Conectar UNA SOLA VEZ
 async function connect() {
+  if (connection) {
+    return connection // Reutiliza si ya existe
+  }
+
   try {
     await client.connect()
-    const database = client.db('database')
-    return database.collection('movies')
+    connection = client.db('database').collection('movies')
+    console.log('Conectado a MongoDB')
+    return connection
   } catch (error) {
-    console.error('Error conectando a la base de datos:', error.message)
-    // Agrega esta línea para evitar el error "Cannot read properties of undefined"
-    throw new Error('No se pudo establecer conexión con la base de datos')
+    console.error('Error de conexión:', error.message)
+    throw error
+  }
+}
+
+// Cerrar conexión cuando termina la app
+export async function disconnect() {
+  if (client) {
+    await client.close()
+    connection = null
   }
 }
 
@@ -56,13 +70,8 @@ export class MovieModel {
 
   static async create({ input }) {
     const db = await connect()
-
     const { insertedId } = await db.insertOne(input)
-
-    return {
-      id: insertedId,
-      ...input,
-    }
+    return { id: insertedId, ...input }
   }
 
   static async delete({ id }) {
@@ -75,15 +84,11 @@ export class MovieModel {
   static async update({ id, input }) {
     const db = await connect()
     const objectId = new ObjectId(id)
-
-    const { ok, value } = await db.findOneAndUpdate(
+    const { value } = await db.findOneAndUpdate(
       { _id: objectId },
       { $set: input },
-      { returnNewDocument: true },
+      { returnDocument: 'after' }, // ← Cambié 'returnNewDocument' por 'returnDocument'
     )
-
-    if (!ok) return false
-
     return value
   }
 }

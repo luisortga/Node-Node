@@ -7,7 +7,8 @@ const DEFAULT_CONFIG = {
   password: '00240036',
   database: 'moviesdb',
 }
-const connectionString = process.env.DATABASE_URL ?? DEFAULT_CONFIG
+
+const connectionString = process.env.MYSQL_URI ?? DEFAULT_CONFIG
 
 const connection = await mysql.createConnection(connectionString)
 
@@ -69,7 +70,7 @@ export class MovieModel {
 
   static async create({ input }) {
     const {
-      genre: genreInput, // genre is an array
+      // genre: genreInput, // genre is an array
       title,
       year,
       duration,
@@ -89,7 +90,7 @@ export class MovieModel {
           VALUES (UUID_TO_BIN("${uuid}"), ?, ?, ?, ?, ?, ?);`,
         [title, year, director, duration, poster, rate],
       )
-    } catch (e) {
+    } catch {
       // puede enviarle información sensible
       throw new Error('Error creating movie')
       // enviar la traza a un servicio interno
@@ -118,7 +119,7 @@ export class MovieModel {
       }
 
       return { message: 'Película eliminada correctamente' }
-    } catch (e) {
+    } catch {
       throw new Error('Error eliminando la película')
     }
   }
@@ -178,7 +179,7 @@ export class MovieModel {
       if (movies.length === 0) return null
 
       return movies[0]
-    } catch (e) {
+    } catch {
       throw new Error('Error actualizando la película')
     }
   }

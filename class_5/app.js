@@ -3,6 +3,7 @@ import helmet from 'helmet'
 import { createMovieRouter } from './routes/movies.js'
 import { corsMiddleware } from './middleware/cors.js'
 import morgan from 'morgan'
+import 'dotenv/config'
 
 export const createApp = ({ movieModel }) => {
   const app = express()

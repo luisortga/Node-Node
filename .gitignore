@@ -2,3 +2,4 @@
 **/node_modules
 class_1/*.ps1
 .eslintrc.json
+.env

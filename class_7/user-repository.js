@@ -4,8 +4,6 @@ import DBLocal from 'db-local'
 import bcrypt from 'bcrypt'
 
 import { SALT_ROUNDS } from './config.js'
-import { loadESLint } from 'eslint'
-import { SocketAddress } from 'node:net'
 const { Schema } = new DBLocal({ path: './db' })
 
 const User = Schema('User', {
@@ -45,7 +43,11 @@ export class UserRepository {
     const isValid = bcrypt.compareSync(password, user.password)
     if (!isValid) throw new Error('password is invalid')
 
-    return user
+    const { password: _, ...publicUser } = user // quitarle propiedades a un objeto
+
+    return {
+      username: publicUser,
+    }
   }
 }
 

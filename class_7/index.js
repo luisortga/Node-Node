@@ -3,10 +3,12 @@ import { PORT } from './config.js'
 import { UserRepository } from './user-repository.js'
 
 const app = express()
+
+app.set('view engine', 'ejs')
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello Node js!</h1>')
+  res.render('index')
 })
 
 // end points
@@ -34,7 +36,10 @@ app.post('/register', async (req, res) => {
 
 app.post('/logout', (req, res) => {})
 
-app.get('/protected', (req, res) => {})
+app.get('/protected', (req, res) => {
+  res.render('protected', { username: 'luis' })
+  // else 401
+})
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)

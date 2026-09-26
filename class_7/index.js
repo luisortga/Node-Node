@@ -53,8 +53,8 @@ app.post('/login', async (req, res) => {
         maxAge: 1000 * 60 * 60, // la cookie tiene un tiempo de validez de 1 hora
       })
       .send({ user, token })
-  } catch (err) {
-    res.status(401).send(err.message)
+  } catch {
+    //
   }
 })
 

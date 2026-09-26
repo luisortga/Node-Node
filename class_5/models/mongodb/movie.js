@@ -1,13 +1,13 @@
 import 'dotenv/config'
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb'
 
-const uri = process.env.MONGODB_URI
+const url = process.env.MONGODB_URI
 
-if (!uri) {
+if (!url) {
   throw new Error('Falta la variable de entorno MONGODB_URI en el archivo .env')
 }
 
-const client = new MongoClient(uri, {
+const client = new MongoClient(url, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,

@@ -2,7 +2,7 @@
 GET http://localhost:1234/movies
 
 ### GET
-GET http://localhost:1234/movies?genre=Crime
+GET http://localhost:1234/movies?genre=Action
 
 ### GET
 GET http://localhost:1234/movies?genre=Biography

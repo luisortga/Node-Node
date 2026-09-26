@@ -1,12 +1,293 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pipecoding chat</title>
+    <title>pipecoding chat - Panel de Usuario</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          'Open Sans',
+          'Helvetica Neue',
+          sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      /* Navbar / Header */
+      header {
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 10;
+      }
+
+      .brand {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .user-name {
+        font-weight: 600;
+        color: #28a745;
+      }
+
+      .btn-logout {
+        padding: 8px 16px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+
+      .btn-logout:hover {
+        background-color: #c82333;
+      }
+
+      /* Main Container */
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* Chat Layout Container */
+      .chat-container {
+        background-color: #fff;
+        width: 100%;
+        max-width: 600px;
+        height: 80vh;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .chat-header {
+        background-color: #f8f9fa;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .chat-header h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .chat-header p {
+        margin: 5px 0 0 0;
+        font-size: 12px;
+        color: #28a745;
+      }
+
+      /* Message List */
+      .messages-list {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background-color: #fafafa;
+      }
+
+      .message {
+        max-width: 75%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.4;
+        word-wrap: break-word;
+      }
+
+      .message.received {
+        align-self: flex-start;
+        background-color: #e9ecef;
+        color: #333;
+        border-bottom-left-radius: 2px;
+      }
+
+      .message.sent {
+        align-self: flex-end;
+        background-color: #28a745;
+        color: #fff;
+        border-bottom-right-radius: 2px;
+      }
+
+      .message .author {
+        font-size: 11px;
+        font-weight: bold;
+        margin-bottom: 4px;
+        opacity: 0.8;
+      }
+
+      /* Chat Input Form */
+      .chat-input-form {
+        display: flex;
+        padding: 15px;
+        background-color: #fff;
+        border-top: 1px solid #eee;
+        gap: 10px;
+      }
+
+      .chat-input-form input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+      }
+
+      .chat-input-form input:focus {
+        border-color: #28a745;
+      }
+
+      .chat-input-form button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s;
+      }
+
+      .chat-input-form button:hover {
+        background-color: #218838;
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello <%= username %>!</h1>
-    <h2>Este contenido está protegido</h2>
+    <!-- Encabezado / Navbar -->
+    <header>
+      <div class="brand">pipecoding chat</div>
+      <div class="user-info">
+        <span>Hola, <strong class="user-name"><%= username %></strong></span>
+        <button id="close-session" class="btn-logout">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+      <div class="chat-container">
+        <div class="chat-header">
+          <h2>Sala de Chat Protegida</h2>
+          <p>● Sesión activa como <%= username %></p>
+        </div>
+
+        <!-- Lista de Mensajes -->
+        <div class="messages-list" id="messages-list">
+          <!-- Ejemplo de mensaje recibido -->
+          <div class="message received">
+            <div class="author">Sistema</div>
+            Bienvenido <%= username %> a la zona protegida.
+          </div>
+        </div>
+
+        <!-- Formulario de Envío -->
+        <form class="chat-input-form" id="chat-form">
+          <input
+            type="text"
+            id="message-input"
+            placeholder="Escribe un mensaje..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const $ = (el) => document.querySelector(el)
+
+      const $logoutButton = $('#close-session')
+      const $chatForm = $('#chat-form')
+      const $messageInput = $('#message-input')
+      const $messagesList = $('#messages-list')
+
+      // Manejo de Cerrar Sesión
+      $logoutButton?.addEventListener('click', () => {
+        fetch('/logout', { method: 'POST' }).then(() => {
+          window.location.href = '/'
+        })
+      })
+
+      // Manejo de Envío de Mensaje (Interfaz local / Fetch API / WebSockets)
+      $chatForm?.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const text = $messageInput.value.trim()
+
+        if (!text) return
+
+        // Renderizar mensaje enviado
+        appendMessage('<%= username %>', text, 'sent')
+        $messageInput.value = ''
+
+        /*
+        Aquí puedes integrar Fetch o WebSockets (Socket.io) para enviar el mensaje al backend:
+        fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+      */
+      })
+
+      // Función auxiliar para renderizar mensajes en el chat
+      function appendMessage(author, content, type) {
+        const $msg = document.createElement('div')
+        $msg.classList.add('message', type)
+
+        const $authorDiv = document.createElement('div')
+        $authorDiv.classList.add('author')
+        $authorDiv.innerText = author
+
+        const $textNode = document.createTextNode(content)
+
+        $msg.appendChild($authorDiv)
+        $msg.appendChild($textNode)
+
+        $messagesList.appendChild($msg)
+        $messagesList.scrollTop = $messagesList.scrollHeight
+      }
+    </script>
   </body>
 </html>

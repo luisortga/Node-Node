@@ -3,3 +3,4 @@
 class_1/*.ps1
 .eslintrc.json
 .env.bash 
+.go 

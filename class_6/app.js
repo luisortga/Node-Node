@@ -12,6 +12,7 @@ const port = process.env.PORT ?? 3000
 
 const app = express()
 const server = createServer(app)
+
 const io = new Server(server, {
   connectionStateRecovery: {},
 })
@@ -71,6 +72,9 @@ io.on('connection', async (socket) => {
 })
 
 app.use(logger('dev'))
+
+// Middleware para servir archivos estáticos (styles.css, imágenes, JS cliente, etc.)
+app.use(express.static('client'))
 
 app.get('/', (req, res) => {
   res.sendFile(process.cwd() + '/client/index.html')
